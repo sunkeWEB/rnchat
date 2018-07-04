@@ -7,10 +7,10 @@ export default class Login extends Component {
     }
 
 
-
-    Logout() {
-        alert("退出登陆");
-    }
+    Logout = () => {
+        console.log(this.props.navigation);
+        this.props.navigation.navigate("Login");
+    };
 
     render() {
         return (

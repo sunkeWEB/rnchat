@@ -10,7 +10,9 @@ import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Users from './pages/Users';
 import Swipers from './components/Swiper';
+import Login from './pages/Login';
 import {FormatUserName} from './utils';
+import server from "./utils/request";
 
 const {Toast, CallPhone} = NativeModules;
 const instructions = Platform.select({
@@ -137,6 +139,12 @@ class App extends Component {
         this.Jump = this.Jump.bind(this);
     }
 
+    static AxiosFn  (url,data={},method='GET',pp="http://localhost:3000/") {
+        let option = {url:pp+url,method};
+        method === 'GET' ? option = {...option, params: data} : option = {...option,method,data};
+        return server(option);
+    }
+
     Jump() {
         this.props.navigation.navigate('Chat');
     }
@@ -242,10 +250,13 @@ export default createStackNavigator({
     },
     Users: {
         screen: Users,
+    },
+    Login:{
+        screen:Login
     }
 }, {
     swipeEnabled: true,
-    initialRouteName: "Tab",
+    initialRouteName: "Login",
     navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
         title: "返回",
         headerBackTitle: "返回",
