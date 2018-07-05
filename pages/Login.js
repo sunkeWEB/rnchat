@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {View, Text,Image,TextInput,TouchableOpacity} from 'react-native';
 import AxiosFn from './../api';
+import MySorage from "../utils/storage";
+
 export default class Login extends Component{
     constructor (props){
         super(props);
+        MySorage._getStorage();
         this.state = {
             pname:"",
             pwd:""
@@ -22,8 +25,19 @@ export default class Login extends Component{
 
    async Login () {
        const {pname, pwd} = {...this.state};
-       let x = await AxiosFn('Login',{pname,pwd},"POST");
-       console.log("xxx",x);
+       let x = await AxiosFn('login',{pname,pwd},"POST");
+       let info = x.data;
+       userinfo.id = info.id;
+       userinfo.code = info.code;
+       userinfo.display = info.pname;
+       MySorage._sava("loginuserinfo", JSON.stringify(info));
+       // MySorage._load("loginuserinfo",function (res) {
+       //     console.log("登录的信息1",res);
+       // });
+       this.props.navigation.navigate('Home');
+
+   }
+   async componentDidMount () {
     }
 
     render () {

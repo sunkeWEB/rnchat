@@ -85,7 +85,7 @@ class SendMsgBox extends Component{
                         paddingLeft: 5,
                         paddingRight: 5
                     }}>
-                        <Image source={require('./../public/yuy.png')} style={{height: 30, width: 30}}/>
+                        <Image source={require('./../public/add.png')} style={{height: 30, width: 30}}/>
                     </View>
                 </View>
             </View>

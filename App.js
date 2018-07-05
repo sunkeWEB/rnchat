@@ -13,6 +13,7 @@ import Swipers from './components/Swiper';
 import Login from './pages/Login';
 import {FormatUserName} from './utils';
 import server from "./utils/request";
+import MySorage from './utils/storage';
 
 const {Toast, CallPhone} = NativeModules;
 const instructions = Platform.select({
@@ -21,180 +22,49 @@ const instructions = Platform.select({
     android: 'Double tap R on your keyboard to reload,\n' +
     'Shake or press menu button for dev menu',
 });
-
+window.userinfo = {
+    id: '',
+    code: '',
+    display: '',
+};
+window.storage = null;
+window.servers = {
+    server: "192.168.31.24",
+    // getRtcServer: () => "ws://" + servers.serverss + ":9093/",
+    // rtcserver: "ws://" + servers.serverss + "/9093"
+};
+import { chartCenter } from "./components/ChatCenter";
+console.log("消息中心:",chartCenter);
+userinfo.ws = chartCenter.client;
 class App extends Component {
     constructor(props) {
         super(props);
+        this._init();
         this.state = {
-            data: [{
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰111111",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰11",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰22",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰33",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "罗胜兰33333",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }, {
-                id: 1,
-                name: "1罗胜兰33",
-                avatar: '',
-                lasttime: "昨天13:14",
-                lastmsg: "过得怎么样啊"
-            }]
-        }
-        this.Jump = this.Jump.bind(this);
+            open: false
+        };
+        this.ws = null;
     }
 
-    static AxiosFn  (url,data={},method='GET',pp="http://localhost:3000/") {
-        let option = {url:pp+url,method};
-        method === 'GET' ? option = {...option, params: data} : option = {...option,method,data};
-        return server(option);
-    }
-
-    Jump() {
-        this.props.navigation.navigate('Chat');
-    }
-
-    render() {
-        let state = this.state;
-        return (
-            <View style={{backgroundColor: "#e3e3e3"}}>
-                <View style={{height: 140, backgroundColor: "red"}}>
-                    <Swipers/>
-                </View>
-                <View style={{marginBottom: 280}}>
-                    <FlatList data={state.data} renderItem={({item}) => {
-                        return (<TouchableOpacity key={item.id} onPress={this.Jump} style={{
-                            backgroundColor: "#fff",
-                            padding: 8,
-                            borderBottomWidth: 1,
-                            borderStyle: "solid",
-                            flex: 1,
-                            flexDirection: "row",
-                            borderBottomColor: "#eee"
-                        }}>
-                            <View style={{backgroundColor: '#0079f5', height: 50, width: 50,}}>
-                                <View style={{flex: 1, justifyContent: "center", alignContent: "center",}}>
-                                    <Text
-                                        style={{color: "#fff", alignSelf: 'center'}}>{FormatUserName(item.name)}</Text>
-                                </View>
-                            </View>
-                            <View style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignContent: "center",
-                                marginLeft: 10
-                            }}>
-                                <Text style={{color: "black"}}>{item.name}</Text>
-                                <Text>{item.lastmsg}</Text>
-                            </View>
-                            <View>
-                                <Text style={{color: "#ccc"}}>{item.lasttime}</Text>
-                            </View>
-                        </TouchableOpacity>)
-                    }}/>
-                </View>
-            </View>
-        );
+    async _init() {
+        MySorage._load("loginuserinfo", function (res) {
+            let info = JSON.parse(res);
+            console.log(info.id,info.pname,(info.code || info.pname));
+            if (info.code==='' || info.pname==='') {
+                alert("请重新登录");
+                setInterval(()=>{
+                    this.props.navigation.navigate("Login");
+                },1000)
+            }else{
+                userinfo.id = info.id;
+                userinfo.code = info.code;
+                userinfo.display = info.pname;
+            }
+        });
     }
 }
 
-
-
+userinfo.App = new App();
 
 let Tab = createBottomTabNavigator({
     Home: {
@@ -239,32 +109,32 @@ let Tab = createBottomTabNavigator({
 });
 
 export default createStackNavigator({
-    Tab:{
-        screen:Tab
-    },
-    Chat:{
-        screen:Chat
-    },
-    Home: {
-        screen: Home,
-    },
-    Users: {
-        screen: Users,
-    },
-    Login:{
-        screen:Login
-    }
-}, {
-    swipeEnabled: true,
-    initialRouteName: "Login",
-    navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
-        title: "返回",
-        headerBackTitle: "返回",
-        headerStyle: {
-            backgroundColor: '#fff',
-            display:"flex",
-            color: '#349aff'
+        Tab: {
+            screen: Tab
         },
-        headerTintColor: 'black'
-    },
-});
+        Chat: {
+            screen: Chat
+        },
+        Home: {
+            screen: Home,
+        },
+        Users: {
+            screen: Users,
+        },
+        Login: {
+            screen: Login
+        }
+    }, {
+        swipeEnabled: true,
+        initialRouteName: "Tab",
+        navigationOptions: {  // 屏幕导航的默认选项, 也可以在组件内用 static navigationOptions 设置(会覆盖此处的设置)
+            title: "返回",
+            headerBackTitle: "返回",
+            headerStyle: {
+                backgroundColor: '#fff',
+                display: "flex",
+                color: '#349aff'
+            },
+            headerTintColor: 'black'
+        },
+    });
