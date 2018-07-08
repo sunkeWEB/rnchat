@@ -6,9 +6,9 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
-    let x = false;
-    if (x) {
-        config.headers['authorization'] = "Bearer ";
+    console.log("token",window.userinfo);
+    if (window.userinfo.token) {
+        config.headers['authorization'] = "Bearer "+window.userinfo.token;
     }
     console.log(config);
     return config
@@ -21,6 +21,7 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
     response => {
         const res = response.data;
+        console.log(res);
         //2是登录成功  888 验证通过 3 修改
         if (res.code === 0 || res.code === 1 || res.code === 2 || res.code === 3 || res.code === 888) {
             if (res.code === 2 || res.code===3) {  // 获取数据成功就不显示消息弹出

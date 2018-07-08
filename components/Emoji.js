@@ -14,7 +14,6 @@ export default class Emoji extends Component {
             .split(' ')
             .filter(v => v)
             .map(v => ({text: v}));
-        console.log(emoji);
         return (
             <View>
                 <ScrollView horizontal={true}

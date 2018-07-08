@@ -6,7 +6,7 @@ import server from './../utils/request';
  * @param data 求情参数 默认{}
  * @constructor
  */
-export default function AxiosFn(url,data={},method='GET',pp="http://192.168.31.24:9093/") {
+export default function AxiosFn(url,data={},method='GET',pp="http://192.168.0.101:9093/") {
     let option = {url:pp+url,method};
     method === 'GET' ? option = {...option, params: data} : option = {...option,method,data};
     console.log(option);

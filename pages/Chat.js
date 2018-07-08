@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
-import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, Image, TouchableOpacity,Button} from 'react-native';
 import Emoji from './../components/Emoji';
 export default class Chat extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            toid:this.props.navigation.state.params.id
+        };
     }
+
 
     _onEmoticonPress() {
 
@@ -14,8 +18,12 @@ export default class Chat extends Component {
 
     }
 
+    componentDidMount () {
+        console.log("userinfo.ws",this.props.navigation.state.params.id);
+    }
+
     render() {
-        console.log("跟新");
+        let state = this.state;
         return (
             <View style={{height: "100%", flex: 1}}>
                 <View style={{flex: 1}}>
@@ -31,7 +39,7 @@ export default class Chat extends Component {
                     {/*/>*/}
                 </View>
                 <View style={{backgroundColor: "#fff", height: 50}}>
-                    <SendMsgBox/>
+                    <SendMsgBox toid={state.toid} />
                 </View>
             </View>
         )
@@ -42,8 +50,22 @@ class SendMsgBox extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            yuying: false
+            yuying: false,
+            txt:'default'
         };
+        this.sendText = this.sendText.bind(this);
+    }
+    sendText() {
+        console.log("userinfo.ws.socket",userinfo.ws.socket);
+        let socket = userinfo.ws.socket;
+        console.log("chat_socket",socket);
+        if (!socket) {
+            return;
+        }
+        socket.emit('message',{type:'text',idto:this.props.toid,body:{data:this.state.txt}});
+    }
+    componentDidMount () {
+        // console.log("userinfo.ws",this.props);
     }
     render () {
         return (
@@ -63,7 +85,7 @@ class SendMsgBox extends Component{
                     {this.state.yuying ?
                         <TouchableOpacity style={{flex:1,justifyContent:"center"}}>
                             <Text style={{alignSelf:"center"}}>按住 说话</Text></TouchableOpacity> :
-                        < TextInput placeholder={"输入内容并发送"}/>
+                        < TextInput placeholder={"输入内容并发送1"} onChangeText={(e)=>this.state.txt=e} />
                     }
                 </View>
                 <View>
@@ -78,15 +100,17 @@ class SendMsgBox extends Component{
                     </View>
                 </View>
                 <View>
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignContent: "center",
-                        paddingLeft: 5,
-                        paddingRight: 5
-                    }}>
-                        <Image source={require('./../public/add.png')} style={{height: 30, width: 30}}/>
-                    </View>
+                    {/*<View*/}
+                        {/*style={{*/}
+                        {/*flex: 1,*/}
+                        {/*justifyContent: "center",*/}
+                        {/*alignContent: "center",*/}
+                        {/*paddingLeft: 5,*/}
+                        {/*paddingRight: 5*/}
+                    {/*}}>*/}
+                        {/*<Image source={require('./../public/add.png')} style={{height: 30, width: 30}}/>*/}
+                    {/*</View>*/}
+                    <Button title={"發送"} onPress={this.sendText} />
                 </View>
             </View>
         )
