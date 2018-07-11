@@ -7,7 +7,6 @@ let defaultExpires = 1000*3600*24*7;  // 七天过期
 let size = 100000000000000000000000;
 export default class MySorage extends Component {
     static _getStorage() {
-        console.log("storage",storage);
         if (storage === undefined) {
             storage = new Storage({
                 // 最大容量，默认值1000条数据循环存储
@@ -32,7 +31,7 @@ export default class MySorage extends Component {
         return storage;
     }
     static _sava3(key, object, expires) {
-        console.log("----save3");
+
         this.isInit();
         storage.save({
             key: key,  // 注意:请不要在key中使用_下划线符号!
@@ -44,7 +43,7 @@ export default class MySorage extends Component {
 
     }
     static _sava(key, object) {
-        console.log("----save");
+
         this._sava3(key, object, defaultExpires);
     }
     static _remove(key) {

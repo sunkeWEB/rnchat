@@ -6,11 +6,10 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
-    console.log("token",window.userinfo);
     if (window.userinfo.token) {
         config.headers['authorization'] = "Bearer "+window.userinfo.token;
     }
-    console.log(config);
+    console.log("请求的信息",window.userinfo,config);
     return config
 }, error => {
     console.log("error1",error);

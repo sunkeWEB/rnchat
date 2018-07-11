@@ -27,15 +27,15 @@ export default class Login extends Component{
        const {pname, pwd} = {...this.state};
        let x = await AxiosFn('login',{pname,pwd},"POST");
        let info = x.data;
-       console.log("tokenLogin",info);
        userinfo.id = info.id;
        userinfo.code = info.code;
        userinfo.token = info.token;
        userinfo.display = info.pname;
-       MySorage._sava("loginuserinfo", JSON.stringify(userinfo));
-       MySorage._load("loginuserinfo",function (res) {
-           console.log("登录的信息1",res);
-       });
+       let {ws, ...y} = {...userinfo};
+       MySorage._sava("loginuserinfo", JSON.stringify(y));
+       // MySorage._load("loginuserinfo",function (res) {
+       //     console.log("登录的信息1",res);
+       // });
        this.props.navigation.navigate('Home');
 
    }

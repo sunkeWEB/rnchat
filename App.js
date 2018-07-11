@@ -34,7 +34,7 @@ window.servers = {
 import {chartCenter} from "./components/ChatCenter";
 console.log("消息中心:", chartCenter);
 userinfo.ws = chartCenter.client;
-
+console.disableYellowBox = true;
 class App extends Component {
     constructor(props) {
         super(props);
@@ -42,10 +42,22 @@ class App extends Component {
         this.state = {
             open: false
         };
-        this.ws = null;
+        console.log("APp",userinfo.ws );
+        chartCenter.mmm = () => {
+            alert("App 里面有消息噢!");
+        };
+        console.log(chartCenter);
+        // userinfo.ws.socket.onMessage =(data)=>{
+        //     alert("有消息");
+        // }
+        // userinfo.ws.socket.on("recvmesg",function () {
+        //     alert("asasa");
+        // });
     }
 
+
     async _init() {
+        console.log("_init");
         MySorage._load("loginuserinfo", function (res) {
             let info = JSON.parse(res);
             console.log("登录信息加载1--> ",info);
@@ -59,6 +71,7 @@ class App extends Component {
                 userinfo.code = info.code;
                 userinfo.display = info.pname;
                 userinfo.token = info.token;
+                console.log("获取本地信息",userinfo);
             }
         });
     }
@@ -70,10 +83,10 @@ let Tab = createBottomTabNavigator({
     Home: {
         screen: Home,
         navigationOptions: ({navigation}) => ({
-            title: "首页",
+            title: "聊天",
             tabBarIcon: ({focused}) => (
                 <Image resizeMode='contain'
-                       source={focused ? require('./public/homepng.png') : require('./public/homepng.png')}
+                       source={focused ? require('./public/chat.png') : require('./public/chat.png')}
                        style={{width: 20, height: 20}}
                 />
             )
@@ -85,7 +98,7 @@ let Tab = createBottomTabNavigator({
             title: "好友",
             tabBarIcon: ({focused}) => (
                 <Image resizeMode='contain'
-                       source={focused ? require('./public/avatars.png') : require('./public/avatars.png')}
+                       source={focused ? require('./public/lxr.png') : require('./public/lxr.png')}
                        style={{width: 20, height: 20}}
                 />
             )
@@ -97,7 +110,7 @@ let Tab = createBottomTabNavigator({
             title: "我的",
             tabBarIcon: ({focused}) => (
                 <Image resizeMode='contain'
-                       source={focused ? require('./public/avatars.png') : require('./public/avatars.png')}
+                       source={focused ? require('./public/my.png') : require('./public/my.png')}
                        style={{width: 20, height: 20}}
                 />
             )
