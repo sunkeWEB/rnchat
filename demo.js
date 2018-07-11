@@ -1,17 +1,21 @@
-
-
-class B{
-
-    say () {
-        console.log("-----------");
-        this.hello();
+class A {
+    constructor () {
+        setTimeout(() =>
+                this.mm()
+            , 2000);
     }
-
+    mm () {
+        this['hello']();
+    }
 }
 
-let b = new B();
+class B{
+    controlFilter = new A();
+    constructor () {
+        this.controlFilter.hello=function () {
+            console.log("外面的hello");
+        }
+    }
+}
 
-b.hello = function () {
-    console.log("1111111");
-};
-b.say();
+export let bb = new B();
