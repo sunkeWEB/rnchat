@@ -57,16 +57,15 @@ class SendMsgBox extends Component{
         this.sendText = this.sendText.bind(this);
     }
     sendText() {
-        console.log("userinfo.ws.socket",userinfo.ws.socket);
         let socket = userinfo.ws.socket;
         console.log("chat_socket",socket);
         if (!socket) {
             return;
         }
-        socket.emit('message',{type:'text',idto:this.props.toid,body:{data:this.state.txt}});
+        userinfo.ws.sendMessage({type:'_txt_message',idto:this.props.toid,body:{data:this.state.txt}});
     }
     componentDidMount () {
-        // console.log("userinfo.ws",this.props);
+
     }
 
     others () {

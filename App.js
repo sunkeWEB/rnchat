@@ -28,8 +28,6 @@ window.userinfo = {
 window.storage = null;
 window.servers = {
     server: "192.168.31.24",
-    // getRtcServer: () => "ws://" + servers.serverss + ":9093/",
-    // rtcserver: "ws://" + servers.serverss + "/9093"
 };
 import {chartCenter} from "./components/ChatCenter";
 console.log("消息中心:", chartCenter);
@@ -42,17 +40,6 @@ class App extends Component {
         this.state = {
             open: false
         };
-        console.log("APp",userinfo.ws );
-        chartCenter.mmm = () => {
-            alert("App 里面有消息噢!");
-        };
-        console.log(chartCenter);
-        // userinfo.ws.socket.onMessage =(data)=>{
-        //     alert("有消息");
-        // }
-        // userinfo.ws.socket.on("recvmesg",function () {
-        //     alert("asasa");
-        // });
     }
 
 

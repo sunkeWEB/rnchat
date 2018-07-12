@@ -1,27 +1,27 @@
+import {Vibration} from 'react-native';
 import io from 'socket.io-client';
 
-
+const PATTERN = 500;
 class RtcMessage {
-    fillMessage() {
-        // console.log("FillterMessage222",this,this['hello']);
-        // alert("FillterMessage222");
-        RtcMessageCenter.onMessage();
-        // if (this['hello']) {
-        //     this['hello']();
-        // }
-        // return true;
+    fillMessage=()=> {
+        alert("RtcMessage");
     }
 }
-
+//
+// class RTC extends RtcMessage{
+// constructor() {
+//     super();
+// }
+// }
 
 class RtcClient {
+
     constructor() {
+        this.mm = "121";
         this.autoConnect();
     }
-
     socket;
-    fillter;
-
+    fillter = new RtcMessage();
     async autoConnect() {
         console.log("autoConnect執行", window.userinfo);
         let socket;
@@ -33,7 +33,6 @@ class RtcClient {
                 return;
             }
             let server = "ws://192.168.31.24:9093";
-            this.fillter = new RtcMessage();
             if (this.socket && this.socket.close) this.socket.close();
             this.socket = null;
             socket = io(server);
@@ -41,43 +40,43 @@ class RtcClient {
                 console.log("發起連接", socket, {id: userinfos.id, socketId: socket.id});
                 socket.emit("__join", {id: userinfos.id, socketId: socket.id});
             });
-            socket.on("recvmesg", () => alert("你有新的消息噢!"));
+            socket.on("recvmesg", (data) => this.onMessage(data));
             this.socket = socket;
         }
         catch (e) {
             console.log("websocket连接失败", e);
         } finally {
-            console.log("finally");
             setTimeout(() => this.autoConnect(), 10000);
         }
     }
 
-    // 消息来的时候
-    onMessage() {
-        this.fillter.onMessage();
-    }
 
     onClose() {
         this.fillter = null;
         this.socket = null;
     }
+
+    sendMessage (data) {
+        this.socket.emit('_txt_message',data);
+    }
+
+    onMessage (data) {
+        let event = data.type;
+        if (!event) return;
+        this.fillter[event](data);
+    }
+
 }
 
 class RtcMessageCenter {
-
-    constructor () {
-        console.log("RtcMessageCenter");
-    }
     client = new RtcClient();
-    chatMessage = new RtcMessage();
-    static onMessage () {
-        // alert("11111");
-        console.log("1111",this,this['mmm']);
-        if (this['mmm']) {
-            this['mmm']();
+    constructor () {
+        // 文本消息
+        this.client.fillter._txt_message=()=>{
+            alert("1212");
+            Vibration.vibrate(PATTERN);
         }
     }
-
 }
 
 export let chartCenter = new RtcMessageCenter();
