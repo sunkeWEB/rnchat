@@ -12,13 +12,8 @@ import Users from './pages/Users';
 import Connect from './pages/Connect';
 import Login from './pages/Login';
 import MySorage from './utils/storage';
+import {initDataBase,insert, updateUserDatas,read} from "./utils/asyncsql";
 
-const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-    android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 window.userinfo = {
     id: '',
     code: '',
@@ -52,13 +47,14 @@ class App extends Component {
                 alert("请重新登录");
                 setInterval(() => {
                     this.props.navigation.navigate("Login");
-                }, 1000)
+                }, 1000);
             } else {
                 userinfo.id = info.id;
                 userinfo.code = info.code;
                 userinfo.display = info.pname;
                 userinfo.token = info.token;
                 console.log("获取本地信息",userinfo);
+                let isOpen = initDataBase({userId:userinfo.id});
             }
         });
     }

@@ -128,7 +128,7 @@ export default class Home extends Component{
         let state = this.state;
         return (
             <View style={{backgroundColor: "#e3e3e3"}}>
-                <View style={{height: 140, backgroundColor: "red"}}>
+                <View style={{height: 140}}>
                     <Swipers/>
                 </View>
                 <View style={{marginBottom: 280}}>
